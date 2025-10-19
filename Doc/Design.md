@@ -1,4 +1,5 @@
 ## フォルダ構成
+```
 Assets/
 ├─ ThirdParty/                              # 外部（UniVRM/ChatdollKit/SDK類）
 │  ├─ UniVRM/
@@ -93,8 +94,10 @@ OpenAvatarKid.UseCases          # 参照: Domain
 OpenAvatarKid.InterfaceAdapters # 参照: UseCases, Domain
 OpenAvatarKid.Infrastructure    # 参照: InterfaceAdapters, UseCases, Domain, UnityEngine, VRM
 OpenAvatarKid.Presentation      # 参照: InterfaceAdapters, UseCases, Domain, Unity UI
+```
 
 ## データフロー
+```
 [User]
   ├─🎙 Mic ──> SpeechToTextListener ──┐
   └─⌨️ UI.Input ─> SimpleChatUI ──────┘
@@ -165,3 +168,4 @@ RunInteractionUseCase.cs
   ├─ IEmotionPort (表情)
   ├─ IAnimationPort (体の動き)
   └─ [並列] IAudioLevelPort→DriveLipSyncUseCase→IVisemeApplyPort（口形状）
+```
