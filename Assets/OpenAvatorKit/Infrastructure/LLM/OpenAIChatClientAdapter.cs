@@ -42,8 +42,8 @@ namespace OpenAvatarKid.Infrastructure.LLM
                 response_format = new { type = "json_object" },
                 messages = new object[]
                 {
-                    new { role = "system", content = systemPrompt },
-                    new { role = "user", content = this.systemPrompt },
+                    new { role = "system", content = this.systemPrompt },
+                    new { role = "user", content = userText },
                 }
             };
 
