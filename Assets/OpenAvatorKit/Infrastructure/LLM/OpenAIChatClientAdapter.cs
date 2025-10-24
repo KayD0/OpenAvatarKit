@@ -7,6 +7,8 @@ using UnityEngine.Networking;
 using OpenAvatarKid.Domain.Conversation;
 using OpenAvatarKid.UseCases.Ports;
 using OpenAvatarKid.InterfaceAdapters.Llm;
+using Cysharp.Threading.Tasks;
+using System.Net;
 
 namespace OpenAvatarKid.Infrastructure.LLM
 {
@@ -30,9 +32,10 @@ namespace OpenAvatarKid.Infrastructure.LLM
             this.model = model;
             this.temperature = temperature;
             this.systemPrompt = systemPrompt;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
-        public async Task<ConversationScript> GetScriptAsync(string userText, Lang lang, CancellationToken ct)
+        public async UniTask<ConversationScript> GetScriptAsync(string userText, Lang lang, CancellationToken ct)
         {
             var payload = new
             {
@@ -55,16 +58,11 @@ namespace OpenAvatarKid.Infrastructure.LLM
             req.SetRequestHeader("Content-Type", "application/json");
             req.SetRequestHeader("Authorization", $"Bearer {apiKey}");
 
-            var op = req.SendWebRequest();
-            while (!op.isDone)
-            {
-                if (ct.IsCancellationRequested)
-                {
-                    req.Abort();
-                    ct.ThrowIfCancellationRequested();
-                }
-                await Task.Yield();
-            }
+            // ★ 重要: 2回目以降のSSL再利用を避ける
+            // req.SetRequestHeader("Connection", "close");
+
+            // ★ 送信のawaitを正しく（自前ループ禁止）
+            await req.SendWebRequest().ToUniTask(cancellationToken: ct);
 
 #if UNITY_2020_1_OR_NEWER
             if (req.result != UnityWebRequest.Result.Success)

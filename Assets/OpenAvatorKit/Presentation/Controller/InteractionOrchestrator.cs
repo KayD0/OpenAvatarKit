@@ -3,12 +3,13 @@ using System.Threading.Tasks;
 using UnityEngine;
 using OpenAvatarKid.Domain.Conversation;
 using OpenAvatarKid.UseCases.Interactors;
+using Cysharp.Threading.Tasks;
 
 namespace OpenAvatarKid.Presentation.Controllers
 {
     public sealed class InteractionOrchestrator : MonoBehaviour
     {
-        [SerializeField] private SimpleChatUI ui;
+        [SerializeField] private SimpleMessageWindow ui; // 入出力を兼ねる
 
         // Bootstrap から注入
         private RunInteractionUseCase runUseCase;
@@ -19,10 +20,12 @@ namespace OpenAvatarKid.Presentation.Controllers
         public void Inject(RunInteractionUseCase useCase)
         {
             runUseCase = useCase;
+            Debug.Log("[InteractionOrchestrator] Injected RunInteractionUseCase.");
         }
 
         private void OnEnable()
         {
+            if (ui == null) Debug.LogError("[InteractionOrchestrator] ui(SimpleMessageWindow) is NOT assigned.", this);
             if (ui != null) ui.OnSubmit += HandleUserText;
         }
 
@@ -31,15 +34,26 @@ namespace OpenAvatarKid.Presentation.Controllers
             if (ui != null) ui.OnSubmit -= HandleUserText;
             cts?.Cancel();
             cts?.Dispose();
+            cts = null;
         }
 
         private void HandleUserText(string text)
         {
-            if (isBusy)
+            if (string.IsNullOrWhiteSpace(text)) return;
+
+            if (runUseCase == null)
             {
-                ui.AppendLog("(busy: 前リクエスト処理中)");
+                Debug.LogError("[InteractionOrchestrator] runUseCase is NULL. BootstrapからInjectしてください。", this);
+                _ = ui?.ShowMessageAsync("（内部エラー：UseCase未注入）", CancellationToken.None);
                 return;
             }
+
+            if (isBusy)
+            {
+                _ = ui?.ShowMessageAsync("（前の処理中です…）", CancellationToken.None);
+                return;
+            }
+
             cts?.Cancel();
             cts = new CancellationTokenSource();
             _ = RunFlowAsync(text, cts.Token);
@@ -50,23 +64,33 @@ namespace OpenAvatarKid.Presentation.Controllers
             isBusy = true;
             try
             {
-                // 言語はとりあえず日本語固定。後で自動判定 or UI 切替。
+                // if (ui != null) await ui.ShowMessageAsync($"あなた：{userText}", ct);
+
                 var script = await runUseCase.ExecuteAsync(userText, Lang.Ja, ct);
 
-                // ここではログ出力のみ（次フェーズで TTS/表情に接続）
+                if (script == null || script.Utterances == null || script.Utterances.Count == 0)
+                {
+                    if (ui != null) await ui.ShowMessageAsync("（応答が空でした）", ct);
+                    return;
+                }
+
                 foreach (var utt in script.Utterances)
                 {
-                    ui.AppendLog($"AI: {utt.Text}");
+                    ct.ThrowIfCancellationRequested();
+                    var text = utt?.Text;
+                    if (string.IsNullOrWhiteSpace(text)) continue;
+
+                    if (ui != null) await ui.ShowMessageAsync(text, ct);
                 }
             }
             catch (System.OperationCanceledException)
             {
-                ui.AppendLog("(キャンセル)");
+                if (ui != null) await ui.ShowMessageAsync("（キャンセルされました）", CancellationToken.None);
             }
             catch (System.Exception ex)
             {
                 Debug.LogException(ex);
-                ui.AppendLog($"(エラー) {ex.Message}");
+                if (ui != null) await ui.ShowMessageAsync($"（エラー）{ex.Message}", CancellationToken.None);
             }
             finally
             {
