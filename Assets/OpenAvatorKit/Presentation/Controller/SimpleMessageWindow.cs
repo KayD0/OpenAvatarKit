@@ -1,10 +1,10 @@
-using System;
-using System.Threading;
-using UnityEngine;
-using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using OpenAvatarKid.Presentation.Controllers.Base;
+using System;
+using System.Threading;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace OpenAvatarKid.Presentation.Controllers
 {
