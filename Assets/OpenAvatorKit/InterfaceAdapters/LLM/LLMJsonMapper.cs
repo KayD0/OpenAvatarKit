@@ -5,30 +5,30 @@ using OpenAvatarKid.Domain.Conversation;
 namespace OpenAvatarKid.InterfaceAdapters.LLM
 {
     /// <summary>
-    /// LLM‚ÌDTO‚ğDomainƒ‚ƒfƒ‹iConversationScript/Utterancej‚Öƒ}ƒbƒsƒ“ƒOB
-    /// EnullˆÀ‘S
-    /// EƒfƒtƒHƒ‹ƒg•âŠ®ibetweenPauseSec=1.2fA•\î/ƒ‚[ƒVƒ‡ƒ“/‹­“xj
-    /// E•¶š‚Ì³‹K‰»i¬•¶š‰»‚È‚ÇÅ¬ŒÀj
+    /// LLMã®DTOã‚’Domainãƒ¢ãƒ‡ãƒ«ï¼ˆConversationScript/Utteranceï¼‰ã¸ãƒãƒƒãƒ”ãƒ³ã‚°ã€‚
+    /// ãƒ»nullå®‰å…¨
+    /// ãƒ»ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè£œå®Œï¼ˆbetweenPauseSec=1.2fã€è¡¨æƒ…/ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³/å¼·åº¦ï¼‰
+    /// ãƒ»æ–‡å­—ã®æ­£è¦åŒ–ï¼ˆå°æ–‡å­—åŒ–ãªã©æœ€å°é™ï¼‰
     /// </summary>
     public static class LLMJsonMapper
     {
-        // İŒvã‚ÌŒÅ’èŠù’è’l
+        // è¨­è¨ˆä¸Šã®å›ºå®šæ—¢å®šå€¤
         private const float DefaultBetweenPauseSec = 1.2f;
         private const string DefaultFace = "neutral";
         private const string DefaultBody = "idle";
         private const float DefaultEmotion = 0.3f;
 
         /// <summary>
-        /// Šù‘¶‚ÌŠO•””»’è Lang ‚ğ—DæiSTT‚âUIİ’èjBDTO.lang ‚Í•â•“I‚É‚Ì‚İg—p‚µ‚½‚¢ê‡‚Í‚±‚¿‚ç‚ğ„§B
+        /// æ—¢å­˜ã®å¤–éƒ¨åˆ¤å®š Lang ã‚’å„ªå…ˆï¼ˆSTTã‚„UIè¨­å®šï¼‰ã€‚DTO.lang ã¯è£œåŠ©çš„ã«ã®ã¿ä½¿ç”¨ã—ãŸã„å ´åˆã¯ã“ã¡ã‚‰ã‚’æ¨å¥¨ã€‚
         /// </summary>
         public static ConversationScript ToDomain(LLMScriptDto dto, Lang lang)
         {
             if (dto == null)
             {
-                return Fallback(lang, "(LLMƒGƒ‰[: ‹ó‚ÌƒŒƒXƒ|ƒ“ƒX)");
+                return Fallback(lang, "(LLMï¿½Gï¿½ï¿½ï¿½[: ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½|ï¿½ï¿½ï¿½X)");
             }
 
-            // timing.betweenPauseSec ‚ğ•âŠ®i–¢w’è/0ˆÈ‰º‚Í 1.2f ‚ğÌ—pj
+            // timing.betweenPauseSec ã‚’è£œå®Œï¼ˆæœªæŒ‡å®š/0ä»¥ä¸‹ã¯ 1.2f ã‚’æ¡ç”¨ï¼‰
             var pause = (dto.timing != null && dto.timing.betweenPauseSec > 0f)
                 ? dto.timing.betweenPauseSec
                 : DefaultBetweenPauseSec;
@@ -41,13 +41,13 @@ namespace OpenAvatarKid.InterfaceAdapters.LLM
                 {
                     if (u == null) continue;
 
-                    // ’l‚Ì•âŠ®‚Æ³‹K‰»
+                    // å€¤ã®è£œå®Œã¨æ­£è¦åŒ–
                     var text = u.text ?? string.Empty;
                     var face = string.IsNullOrWhiteSpace(u.faceExpression) ? DefaultFace : u.faceExpression.Trim();
                     var body = string.IsNullOrWhiteSpace(u.bodyExpression) ? DefaultBody : u.bodyExpression.Trim();
                     var emo = Clamp01(u.emotionLevel ?? DefaultEmotion);
 
-                    // Domain Utterance ‚Ö
+                    // Domain Utterance ç”Ÿæˆ
                     utterances.Add(new Utterance(
                         text: text,
                         faceExpression: face,
@@ -56,11 +56,11 @@ namespace OpenAvatarKid.InterfaceAdapters.LLM
                 }
             }
 
-            // ”­˜b‚ª0Œ‚È‚çƒtƒH[ƒ‹ƒoƒbƒN‚ğ1Œ·‚µ‚Ş
+            // ç™ºè©±ãŒ0ä»¶ãªã‚‰ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’1ä»¶å·®ã—è¾¼ã‚€
             if (utterances.Count == 0)
             {
                 utterances.Add(new Utterance(
-                    text: "(‰“š‚È‚µ)",
+                    text: "(å¿œç­”ãªã—)",
                     faceExpression: DefaultFace,
                     bodyExpression: DefaultBody,
                     emotionLevel: 0.0f));
@@ -70,8 +70,8 @@ namespace OpenAvatarKid.InterfaceAdapters.LLM
         }
 
         /// <summary>
-        /// DTO“à‚Ìlang‚ğg‚Á‚Ä Lang ‚ğŒˆ‚ß‚½‚¢ê‡‚ÌƒI[ƒo[ƒ[ƒhB
-        /// iŠù‘¶ƒR[ƒhŒİŠ·‚Ì‚½‚ßc’uB’Êí‚ÍŠO•””»’è”Å‚ğg‚¤‚±‚Æ‚ğ„§j
+        /// DTOå†…ã®langã‚’ä½¿ã£ã¦ Lang ã‚’æ±ºã‚ãŸã„å ´åˆã®ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰ã€‚
+        /// ï¼ˆæ—¢å­˜ã‚³ãƒ¼ãƒ‰äº’æ›ã®ãŸã‚æ®‹ç½®ã€‚é€šå¸¸ã¯å¤–éƒ¨åˆ¤å®šç‰ˆã‚’ä½¿ã†ã“ã¨ã‚’æ¨å¥¨ï¼‰
         /// </summary>
         public static ConversationScript ToDomain(LLMScriptDto dto)
         {

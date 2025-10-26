@@ -1,14 +1,13 @@
-using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using OpenAvatarKid.Domain.Conversation;
+using System.Threading;
 
 namespace OpenAvatarKid.UseCases.Ports
 {
     public interface IChatPort
     {
         /// <summary>
-        /// ƒ†[ƒU“ü—Í‚ğ‚à‚Æ‚É LLM ‚©‚ç‘ä–{ Script ‚ğæ“¾
+        /// ãƒ¦ãƒ¼ã‚¶å…¥åŠ›ã‚’ã‚‚ã¨ã« LLM ã‹ã‚‰å°æœ¬ Script ã‚’å–å¾—
         /// </summary>
         UniTask<ConversationScript> GetScriptAsync(string userText, Lang lang, CancellationToken ct);
     }

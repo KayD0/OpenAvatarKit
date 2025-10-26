@@ -9,9 +9,9 @@ using TMPro;
 namespace OpenAvatarKid.Presentation.Controllers
 {
     /// <summary>
-    /// 2˜gŒÅ’èiUser / Assistantj‚ÉƒƒbƒZ[ƒW‚ğ•\¦‚·‚éƒVƒ“ƒvƒ‹UIB
-    /// - “ü—Í‘—M‚Å UserSlot ‚ğXV‚µAOnSubmit ‚ÅŠO•”‚É’Ê’m
-    /// - ‰“š‚ÍŠO•”‚©‚ç SetAssistantText / SetAssistantTextAsync ‚ğŒÄ‚Ô
+    /// 2æ å›ºå®šï¼ˆUser / Assistantï¼‰ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹ã‚·ãƒ³ãƒ—ãƒ«UIã€‚
+    /// - å…¥åŠ›é€ä¿¡ã§ UserSlot ã‚’æ›´æ–°ã—ã€OnSubmit ã§å¤–éƒ¨ã«é€šçŸ¥
+    /// - å¿œç­”ã¯å¤–éƒ¨ã‹ã‚‰ SetAssistantText / SetAssistantTextAsync ã‚’å‘¼ã¶
     /// </summary>
     [DisallowMultipleComponent]
     [AddComponentMenu("OpenAvatarKid/UI/Simple Two-Slot Message Window")]
@@ -32,23 +32,23 @@ namespace OpenAvatarKid.Presentation.Controllers
         public float preGapSec = 0.10f;
         public float postGapSec = 0.70f;
 
-        [SerializeField] private bool autoHide = false; // g‚í‚È‚¢‚È‚ç false ‚Ì‚Ü‚Ü
+        [SerializeField] private bool autoHide = false; // ä½¿ã‚ãªã„ãªã‚‰ false ã®ã¾ã¾
         private string currentMessageId;
 
         public event Action<string> OnSubmit;
 
         private void Awake()
         {
-            // QÆƒ`ƒFƒbƒN
+            // å‚ç…§ãƒã‚§ãƒƒã‚¯
             if (userText == null) Debug.LogError("[TwoSlot] userText is NOT assigned.", this);
             if (assistantText == null) Debug.LogError("[TwoSlot] assistantText is NOT assigned.", this);
             if (inputField == null) Debug.LogWarning("[TwoSlot] inputField is NOT assigned.", this);
             if (sendButton == null) Debug.LogWarning("[TwoSlot] sendButton is NOT assigned.", this);
 
-            // ‘—Mƒnƒ“ƒhƒ‰
+            // é€ä¿¡ãƒãƒ³ãƒ‰ãƒ©
             if (sendButton != null) sendButton.onClick.AddListener(SubmitInternal);
 
-            // Enter‘—Mi1sj
+            // Enteré€ä¿¡ï¼ˆ1è¡Œï¼‰
             if (inputField != null)
             {
                 inputField.lineType = TMP_InputField.LineType.SingleLine;
@@ -59,19 +59,19 @@ namespace OpenAvatarKid.Presentation.Controllers
             }
         }
 
-        // ==== ‘—M ====
+        // ==== é€ä¿¡ ====
         private void SubmitInternal()
         {
             var text = inputField != null ? inputField.text?.Trim() : null;
             if (string.IsNullOrEmpty(text)) return;
 
-            // 1) ƒ†[ƒU[˜g‚ğXV
+            // 1) ãƒ¦ãƒ¼ã‚¶ãƒ¼æ ã‚’æ›´æ–°
             _ = SetUserTextAsync(text, animateUser, CancellationToken.None);
 
-            // 2) ŠO•”‚Ö’Ê’miLLMŒÄ‚Ño‚µ‚È‚Çj
+            // 2) å¤–éƒ¨ã¸é€šçŸ¥ï¼ˆLLMå‘¼ã³å‡ºã—ãªã©ï¼‰
             OnSubmit?.Invoke(text);
 
-            // 3) “ü—Í—“ƒNƒŠƒA
+            // 3) å…¥åŠ›æ¬„ã‚¯ãƒªã‚¢
             if (inputField != null)
             {
                 inputField.text = string.Empty;
@@ -79,12 +79,12 @@ namespace OpenAvatarKid.Presentation.Controllers
             }
         }
 
-        // ==== MessageWindowBase ŒİŠ·‚ÌÅ’áÀ‘• ====
+        // ==== MessageWindowBase äº’æ›ã®æœ€ä½å®Ÿè£… ====
         public override void Show(string prompt = null)
         {
             SetActive(true);
             if (!string.IsNullOrEmpty(prompt))
-                userText.text = prompt; // ‚±‚±‚Í•K—v‚È‚çƒ†[ƒU[‘¤‚Éi‚Ü‚½‚Í—¼•ûƒNƒŠƒA‚Éj
+                userText.text = prompt; // ã“ã“ã¯å¿…è¦ãªã‚‰ãƒ¦ãƒ¼ã‚¶ãƒ¼å´ã«ï¼ˆã¾ãŸã¯ä¸¡æ–¹ã‚¯ãƒªã‚¢ã«ï¼‰
         }
 
         public override void Hide()
@@ -100,11 +100,11 @@ namespace OpenAvatarKid.Presentation.Controllers
 
         public override async UniTask ShowMessageAsync(string message, CancellationToken token)
         {
-            // ŒİŠ·FƒfƒtƒHƒ‹ƒg‚Í assistant ‘¤‚Éo‚·
+            // äº’æ›ï¼šãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ assistant å´ã«å‡ºã™
             await SetAssistantTextAsync(message, animateAssistant, token);
         }
 
-        // ==== ŒöŠJAPIF˜g‚²‚Æ‚ÌXV ====
+        // ==== å…¬é–‹APIï¼šæ ã”ã¨ã®æ›´æ–° ====
 
         public void SetUserText(string text) =>
             userText.text = text ?? string.Empty;
@@ -122,7 +122,7 @@ namespace OpenAvatarKid.Presentation.Controllers
             await SetSlotAsync(assistantText, text, animate, ct);
         }
 
-        // ==== ‹¤’ÊF•¶š‘—‚è•\¦ ====
+        // ==== å…±é€šï¼šæ–‡å­—é€ã‚Šè¡¨ç¤º ====
         private async UniTask SetSlotAsync(TMP_Text target, string message, bool animate, CancellationToken ct)
         {
             if (target == null) return;
@@ -172,7 +172,7 @@ namespace OpenAvatarKid.Presentation.Controllers
         private void SetActive(bool value) => gameObject.SetActive(value);
     }
 
-    // Šù‘¶ŒİŠ·FƒXƒgƒŠ[ƒ€Œ^‚ª•K—v‚È‚çAassistant‘¤‚É—¬‚µ‚ŞŠÖ”‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
-    // —áF
+    // æ—¢å­˜äº’æ›ï¼šã‚¹ãƒˆãƒªãƒ¼ãƒ å‹ãŒå¿…è¦ãªã‚‰ã€assistantå´ã«æµã—è¾¼ã‚€é–¢æ•°ã‚’è¿½åŠ ã—ã¦ãã ã•ã„ã€‚
+    // ä¾‹ï¼š
     // public async UniTask SetAssistantStreamAsync(IAsyncEnumerable<string> chunks, CancellationToken ct) { ... }
 }

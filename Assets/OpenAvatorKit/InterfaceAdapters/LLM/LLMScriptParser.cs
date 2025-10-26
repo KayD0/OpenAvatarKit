@@ -3,10 +3,10 @@ using Newtonsoft.Json;
 namespace OpenAvatarKid.InterfaceAdapters.LLM
 {
     /// <summary>
-    /// LLM‰“šƒeƒLƒXƒg‚©‚çuƒˆ‚ÈJSONƒIƒuƒWƒFƒNƒgv‚ğŒµ–§’Šo‚µ‚ÄDTO‰»‚·‚éB
-    /// - ‚Ü‚¸‚Í‘f’¼‚ÉDeserialize‚ğs
-    /// - ¸”s‚µ‚½‚ç { ‚Æ } ‚ÌƒlƒXƒg‚ğŒ©‚È‚ª‚çÅ‰‚ÌJSONƒuƒƒbƒN‚ğ’Šo
-    /// - ’Šo‚É¸”s‚µ‚½‚ç‹óDTOiMapper‘¤‚ÅƒtƒH[ƒ‹ƒoƒbƒNj
+    /// LLMå¿œç­”ãƒ†ã‚­ã‚¹ãƒˆã‹ã‚‰ã€Œç´”ç²‹ãªJSONã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€ã‚’å³å¯†æŠ½å‡ºã—ã¦DTOåŒ–ã™ã‚‹ã€‚
+    /// - ã¾ãšã¯ç´ ç›´ã«Deserializeã‚’è©¦è¡Œ
+    /// - å¤±æ•—ã—ãŸã‚‰ { ã¨ } ã®ãƒã‚¹ãƒˆã‚’è¦‹ãªãŒã‚‰æœ€åˆã®JSONãƒ–ãƒ­ãƒƒã‚¯ã‚’æŠ½å‡º
+    /// - æŠ½å‡ºã«å¤±æ•—ã—ãŸã‚‰ç©ºDTOï¼ˆMapperå´ã§ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ï¼‰
     /// </summary>
     public static class LLMScriptParser
     {
@@ -22,17 +22,17 @@ namespace OpenAvatarKid.InterfaceAdapters.LLM
                 };
             }
 
-            // ‡@ ‘f’¼‚É‹tƒVƒŠƒAƒ‰ƒCƒY
+            // â‘  ç´ ç›´ã«é€†ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚º
             try
             {
                 return JsonConvert.DeserializeObject<LLMScriptDto>(raw);
             }
             catch
             {
-                // ¸”s‚ÍŸ‚Ì’iŠK‚Ö
+                // å¤±æ•—æ™‚ã¯æ¬¡ã®æ®µéšã¸
             }
 
-            // ‡A ƒR[ƒhƒtƒFƒ“ƒX‚â‘OŒã‚Ìà–¾•¶‚ª¬‚¶‚éê‡‚ÉJSON•”•ª‚ğ’Šo
+            // â‘¡ ã‚³ãƒ¼ãƒ‰ãƒ•ã‚§ãƒ³ã‚¹ã‚„å‰å¾Œã®èª¬æ˜æ–‡ãŒæ··ã˜ã‚‹å ´åˆã«JSONéƒ¨åˆ†ã‚’æŠ½å‡º
             var json = ExtractFirstJsonObject(raw);
             if (!string.IsNullOrEmpty(json))
             {
@@ -42,7 +42,7 @@ namespace OpenAvatarKid.InterfaceAdapters.LLM
                 }
                 catch
                 {
-                    // ÅŒã‚ÌÔF‹óDTO
+                    // æœ€å¾Œã®ç ¦ï¼šç©ºDTO
                 }
             }
 
@@ -55,8 +55,8 @@ namespace OpenAvatarKid.InterfaceAdapters.LLM
         }
 
         /// <summary>
-        /// ƒeƒLƒXƒg’†‚ÌÅ‰‚Ì { ... } ‚ÌŠ®‘SƒuƒƒbƒN‚ğƒlƒXƒg’ÇÕ‚Å”²‚«o‚·B
-        /// —á: "à–¾•¶```{...}```—]”’" ¨ {...}
+        /// ãƒ†ã‚­ã‚¹ãƒˆä¸­ã®æœ€åˆã® { ... } ã®å®Œå…¨ãƒ–ãƒ­ãƒƒã‚¯ã‚’ãƒã‚¹ãƒˆè¿½è·¡ã§æŠœãå‡ºã™ã€‚
+        /// ä¾‹: "èª¬æ˜æ–‡```{...}```ä½™ç™½" â†’ {...}
         /// </summary>
         private static string ExtractFirstJsonObject(string s)
         {

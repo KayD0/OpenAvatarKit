@@ -8,52 +8,52 @@ namespace OpenAvatarKid.Presentation.Bootstrap
     public sealed class Bootstrap : MonoBehaviour
     {
         [Header("OpenAI")]
-        [SerializeField] private string openAiApiKey; // ¦ˆÀ‘S‰^—p‚Í•â‘«QÆ
+        [SerializeField] private string openAiApiKey; // â€»å®‰å…¨é‹ç”¨ã¯è£œè¶³å‚ç…§
         [SerializeField] private string openAiEndpoint = "https://api.openai.com/v1/chat/completions";
         [SerializeField] private string model = "gpt-4o-mini";
         [SerializeField] private string systemPrompt = @"
-‚ ‚È‚½‚Í‘ä–{JSON‚Ì‚İ‚ğ•Ô‚·o—ÍŠí‚Å‚·Bâ‘Î‚ÉJSONˆÈŠO‚ğo—Í‚µ‚Ü‚¹‚ñB
-ƒXƒL[ƒ}:
+ã‚ãªãŸã¯å°æœ¬JSONã®ã¿ã‚’è¿”ã™å‡ºåŠ›å™¨ã§ã™ã€‚çµ¶å¯¾ã«JSONä»¥å¤–ã‚’å‡ºåŠ›ã—ã¾ã›ã‚“ã€‚
+ã‚¹ã‚­ãƒ¼ãƒ:
 {
   ""utterances"": [
     {
-      ""text"": ""‚±‚ñ‚É‚¿‚ÍBŒ³‹C‚»‚¤‚Å‚·‚ËI"",
+      ""text"": ""ã“ã‚“ã«ã¡ã¯ã€‚å…ƒæ°—ãã†ã§ã™ã­ï¼"",
       ""faceExpression"": ""joy"",
       ""bodyExpression"": ""wave_right"",
       ""emotionLevel"": 0.8
     },
     {
-      ""text"": ""¡“ú‚Í‚Ç‚ñ‚È‚¨è“`‚¢‚ğ‚µ‚Ü‚µ‚å‚¤‚©H"",
+      ""text"": ""ä»Šæ—¥ã¯ã©ã‚“ãªãŠæ‰‹ä¼ã„ã‚’ã—ã¾ã—ã‚‡ã†ã‹ï¼Ÿ"",
       ""faceExpression"": ""neutral"",
       ""bodyExpression"": ""idle"",
       ""emotionLevel"": 0.3
     }
 }
 
-ƒXƒL[ƒ}‚ÌfaceExpressionAbodyExpression‚É‚Í
-Ÿ‚Ì’†‚©‚çÅ‚à©‘R‚ÈŠ´î•\Œ»‚ğ‘I‚Ô‚±‚ÆB
+ã‚¹ã‚­ãƒ¼ãƒã®faceExpressionã€bodyExpressionã«ã¯
+æ¬¡ã®ä¸­ã‹ã‚‰æœ€ã‚‚è‡ªç„¶ãªæ„Ÿæƒ…è¡¨ç¾ã‚’é¸ã¶ã“ã¨ã€‚
 
-| faceExpression | ˆÓ–¡ |
+| faceExpression | æ„å‘³ |
 |----------------|------|
-| neutral        | –³•\îE’Êíó‘Ô |
-| joy            | Šì‚ÑEÎŠç |
-| sad            | ”ß‚µ‚İE—‚¿‚İ |
-| angry          | “{‚èE•s– |
-| surprised      | ‹Á‚«E—\‘zŠO‚Ì”½‰ |
-| fear           | ‹°‚êE•sˆÀ |
-| disgust        | Œ™ˆ«E‹‘”Û |
-| shy            | ’p‚¸‚©‚µ‚»‚¤ |
-| confident      | ©M‚É–‚¿‚½•\î |
-| thinking       | vlEl‚¦’† |
+| neutral        | ç„¡è¡¨æƒ…ãƒ»é€šå¸¸çŠ¶æ…‹ |
+| joy            | å–œã³ãƒ»ç¬‘é¡” |
+| sad            | æ‚²ã—ã¿ãƒ»è½ã¡è¾¼ã¿ |
+| angry          | æ€’ã‚Šãƒ»ä¸æº€ |
+| surprised      | é©šããƒ»äºˆæƒ³å¤–ã®åå¿œ |
+| fear           | æã‚Œãƒ»ä¸å®‰ |
+| disgust        | å«Œæ‚ªãƒ»æ‹’å¦ |
+| shy            | æ¥ãšã‹ã—ãã† |
+| confident      | è‡ªä¿¡ã«æº€ã¡ãŸè¡¨æƒ… |
+| thinking       | æ€è€ƒãƒ»è€ƒãˆä¸­ |
 
-§–ñ:
-- JSONˆÈŠO‚Ì•¶š‚ğo—Í‚µ‚È‚¢ià–¾•¶E’ßEƒR[ƒhƒtƒFƒ“ƒX‹Ö~j
-- text‚Í200šˆÈ“àAÅ’á‚Å‚à1—v‘f
+åˆ¶ç´„:
+- JSONä»¥å¤–ã®æ–‡å­—ã‚’å‡ºåŠ›ã—ãªã„ï¼ˆèª¬æ˜æ–‡ãƒ»æ³¨é‡ˆãƒ»ã‚³ãƒ¼ãƒ‰ãƒ•ã‚§ãƒ³ã‚¹ç¦æ­¢ï¼‰
+- textã¯200å­—ä»¥å†…ã€æœ€ä½ã§ã‚‚1è¦ç´ 
 
-‰“š•ûj:
-- ƒ†[ƒU‚Ì“ü—Í‚Éˆê“x‚¾‚¯’[“I‚É‰“š‚·‚é‘ä–{‚ğ•Ô‚·
-- “ú–{Œê“ü—Í‚È‚ç ""lang"":""ja""
-- Œh‘Ì‚ÅA’š”J‚¾‚ªç’·‚É‚µ‚È‚¢";
+å¿œç­”æ–¹é‡:
+- ãƒ¦ãƒ¼ã‚¶ã®å…¥åŠ›ã«ä¸€åº¦ã ã‘ç«¯çš„ã«å¿œç­”ã™ã‚‹å°æœ¬ã‚’è¿”ã™
+- æ—¥æœ¬èªå…¥åŠ›ãªã‚‰ ""lang"":""ja""
+- æ•¬ä½“ã§ã€ä¸å¯§ã ãŒå†—é•·ã«ã—ãªã„";
         [Range(0f, 2f)][SerializeField] private float temperature = 0.3f;
 
 
@@ -64,7 +64,7 @@ namespace OpenAvatarKid.Presentation.Bootstrap
         {
             if (string.IsNullOrEmpty(openAiApiKey))
             {
-                // ŠÂ‹«•Ï”‚©‚çE‚¤‰^—p
+                // ç’°å¢ƒå¤‰æ•°ã‹ã‚‰æ‹¾ã†é‹ç”¨
                 openAiApiKey = System.Environment.GetEnvironmentVariable("OPENAI_API_KEY");
             }
 

@@ -9,9 +9,9 @@ namespace OpenAvatarKid.Presentation.Controllers
 {
     public sealed class InteractionOrchestrator : MonoBehaviour
     {
-        [SerializeField] private SimpleMessageWindow ui; // “üo—Í‚ğŒ“‚Ë‚é
+        [SerializeField] private SimpleMessageWindow ui; // å…¥å‡ºåŠ›ã‚’å…¼ã­ã‚‹
 
-        // Bootstrap ‚©‚ç’“ü
+        // Bootstrap ã‹ã‚‰æ³¨å…¥
         private RunInteractionUseCase runUseCase;
 
         private CancellationTokenSource cts;
@@ -43,14 +43,14 @@ namespace OpenAvatarKid.Presentation.Controllers
 
             if (runUseCase == null)
             {
-                Debug.LogError("[InteractionOrchestrator] runUseCase is NULL. Bootstrap‚©‚çInject‚µ‚Ä‚­‚¾‚³‚¢B", this);
-                _ = ui?.ShowMessageAsync("i“à•”ƒGƒ‰[FUseCase–¢’“üj", CancellationToken.None);
+                Debug.LogError("[InteractionOrchestrator] runUseCase is NULL. Bootstrapã‹ã‚‰Injectã—ã¦ãã ã•ã„ã€‚", this);
+                _ = ui?.ShowMessageAsync("ï¼ˆå†…éƒ¨ã‚¨ãƒ©ãƒ¼ï¼šUseCaseæœªæ³¨å…¥ï¼‰", CancellationToken.None);
                 return;
             }
 
             if (isBusy)
             {
-                _ = ui?.ShowMessageAsync("i‘O‚Ìˆ—’†‚Å‚·cj", CancellationToken.None);
+                _ = ui?.ShowMessageAsync("ï¼ˆå‰ã®å‡¦ç†ä¸­ã§ã™â€¦ï¼‰", CancellationToken.None);
                 return;
             }
 
@@ -64,13 +64,13 @@ namespace OpenAvatarKid.Presentation.Controllers
             isBusy = true;
             try
             {
-                // if (ui != null) await ui.ShowMessageAsync($"‚ ‚È‚½F{userText}", ct);
+                // if (ui != null) await ui.ShowMessageAsync($"ã‚ãªãŸï¼š{userText}", ct);
 
                 var script = await runUseCase.ExecuteAsync(userText, Lang.Ja, ct);
 
                 if (script == null || script.Utterances == null || script.Utterances.Count == 0)
                 {
-                    if (ui != null) await ui.ShowMessageAsync("i‰“š‚ª‹ó‚Å‚µ‚½j", ct);
+                    if (ui != null) await ui.ShowMessageAsync("ï¼ˆå¿œç­”ãŒç©ºã§ã—ãŸï¼‰", ct);
                     return;
                 }
 
@@ -85,12 +85,12 @@ namespace OpenAvatarKid.Presentation.Controllers
             }
             catch (System.OperationCanceledException)
             {
-                if (ui != null) await ui.ShowMessageAsync("iƒLƒƒƒ“ƒZƒ‹‚³‚ê‚Ü‚µ‚½j", CancellationToken.None);
+                if (ui != null) await ui.ShowMessageAsync("ï¼ˆã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚Œã¾ã—ãŸï¼‰", CancellationToken.None);
             }
             catch (System.Exception ex)
             {
                 Debug.LogException(ex);
-                if (ui != null) await ui.ShowMessageAsync($"iƒGƒ‰[j{ex.Message}", CancellationToken.None);
+                if (ui != null) await ui.ShowMessageAsync($"ï¼ˆã‚¨ãƒ©ãƒ¼ï¼‰{ex.Message}", CancellationToken.None);
             }
             finally
             {

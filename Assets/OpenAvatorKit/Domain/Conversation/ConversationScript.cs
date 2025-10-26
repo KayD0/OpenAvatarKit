@@ -6,13 +6,13 @@ namespace OpenAvatarKid.Domain.Conversation
     public enum Lang { Ja, En }
 
     /// <summary>
-    /// LLM‰“š‚Ì‘ä–{‘S‘Ìi•¡””­˜b{‹¤’Êƒ^ƒCƒ~ƒ“ƒOj
+    /// LLMå¿œç­”ã®å°æœ¬å…¨ä½“ï¼ˆè¤‡æ•°ç™ºè©±ï¼‹å…±é€šã‚¿ã‚¤ãƒŸãƒ³ã‚°ï¼‰
     /// </summary>
     [Serializable]
     public sealed class ConversationScript
     {
         public Lang Language { get; }
-        public float BetweenPauseSec { get; }   // ŠeUtteranceŠÔ‚Ì–³‰¹•b”
+        public float BetweenPauseSec { get; }   // å„Utteranceé–“ã®ç„¡éŸ³ç§’æ•°
         public IReadOnlyList<Utterance> Utterances { get; }
 
         public ConversationScript(Lang language, float betweenPauseSec, IReadOnlyList<Utterance> utterances)

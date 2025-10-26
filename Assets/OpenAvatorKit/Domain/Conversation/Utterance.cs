@@ -3,7 +3,7 @@ using System;
 namespace OpenAvatarKid.Domain.Conversation
 {
     /// <summary>
-    /// アバターの1発話データ
+    /// 繧｢繝舌ち繝ｼ縺ｮ逋ｺ隧ｱ蜀�螳ｹ繧定｡ｨ縺吶け繝ｩ繧ｹ
     /// </summary>
     [Serializable]
     public sealed class Utterance
