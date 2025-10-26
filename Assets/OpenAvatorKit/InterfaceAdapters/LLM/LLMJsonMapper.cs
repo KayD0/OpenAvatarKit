@@ -1,8 +1,8 @@
-using OpenAvatarKid.Domain.Conversation;
+using OpenAvatarKit.Domain.Conversation;
 using System;
 using System.Collections.Generic;
 
-namespace OpenAvatarKid.InterfaceAdapters.LLM
+namespace OpenAvatarKit.InterfaceAdapters.LLM
 {
     /// <summary>
     /// LLMのDTOをDomainモデル（ConversationScript/Utterance）へマッピング。

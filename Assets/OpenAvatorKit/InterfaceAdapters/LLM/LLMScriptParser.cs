@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace OpenAvatarKid.InterfaceAdapters.LLM
+namespace OpenAvatarKit.InterfaceAdapters.LLM
 {
     /// <summary>
     /// LLM応答テキストから「純粋なJSONオブジェクト」を厳密抽出してDTO化する。

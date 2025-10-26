@@ -1,9 +1,9 @@
-using OpenAvatarKid.Infrastructure.LLM;
-using OpenAvatarKid.Presentation.Controllers;
-using OpenAvatarKid.UseCases.Interactors;
+using OpenAvatarKit.Infrastructure.LLM;
+using OpenAvatarKit.Presentation.Controller;
+using OpenAvatarKit.UseCases.Interactors;
 using UnityEngine;
 
-namespace OpenAvatarKid.Presentation.Bootstrap
+namespace OpenAvatarKit.Presentation.Bootstrap
 {
     public sealed class Bootstrap : MonoBehaviour
     {

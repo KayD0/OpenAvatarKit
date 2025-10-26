@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using UnityEngine;
 
-namespace OpenAvatarKid.Presentation.Controllers.Base
+namespace OpenAvatarKit.Presentation.Controller.Base
 {
     public interface IMessageWindow
     {

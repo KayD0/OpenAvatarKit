@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OpenAvatarKid.InterfaceAdapters.LLM
+namespace OpenAvatarKit.InterfaceAdapters.LLM
 {
     /// <summary>
     /// LLMが返すトップレベルJSONのDTO。

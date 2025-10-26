@@ -1,10 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
-using OpenAvatarKid.Domain.Conversation;
-using OpenAvatarKid.Domain.Services;
-using OpenAvatarKid.Infrastructure.Interface;
+using OpenAvatarKit.Domain.Conversation;
+using OpenAvatarKit.Domain.Services;
+using OpenAvatarKit.Infrastructure.Interface;
 
-namespace OpenAvatarKid.UseCases.Interactors
+namespace OpenAvatarKit.UseCases.Interactors
 {
     public sealed class RunInteractionUseCase
     {

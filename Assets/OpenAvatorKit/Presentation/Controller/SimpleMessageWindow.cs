@@ -1,12 +1,12 @@
 using Cysharp.Threading.Tasks;
-using OpenAvatarKid.Presentation.Controllers.Base;
+using OpenAvatarKit.Presentation.Controller.Base;
 using System;
 using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace OpenAvatarKid.Presentation.Controllers
+namespace OpenAvatarKit.Presentation.Controller
 {
     /// <summary>
     /// 2枠固定（User / Assistant）にメッセージを表示するシンプルUI。
@@ -14,7 +14,7 @@ namespace OpenAvatarKid.Presentation.Controllers
     /// - 応答は外部から SetAssistantText / SetAssistantTextAsync を呼ぶ
     /// </summary>
     [DisallowMultipleComponent]
-    [AddComponentMenu("OpenAvatarKid/UI/Simple Two-Slot Message Window")]
+    [AddComponentMenu("OpenAvatarKit/UI/Simple Two-Slot Message Window")]
     public class SimpleMessageWindow : MessageWindowBase
     {
         [Header("Output Slots (TMP_Text)")]

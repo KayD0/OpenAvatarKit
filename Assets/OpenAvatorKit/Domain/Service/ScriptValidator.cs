@@ -1,9 +1,9 @@
-﻿using OpenAvatarKid.Domain.Conversation;
+﻿using OpenAvatarKit.Domain.Conversation;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace OpenAvatarKid.Domain.Services
+namespace OpenAvatarKit.Domain.Services
 {
     /// <summary>
     /// ConversationScript の最終安全化（クランプ/正規化/既定値補完）を行うユーティリティ。

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OpenAvatarKid.Domain.Conversation
+namespace OpenAvatarKit.Domain.Conversation
 {
     public enum Lang { Ja, En }
 

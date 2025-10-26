@@ -1,8 +1,8 @@
 ﻿using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
-using OpenAvatarKid.Domain.Conversation;
-using OpenAvatarKid.Infrastructure.Interface;
-using OpenAvatarKid.InterfaceAdapters.LLM;
+using OpenAvatarKit.Domain.Conversation;
+using OpenAvatarKit.Infrastructure.Interface;
+using OpenAvatarKit.InterfaceAdapters.LLM;
 using System;
 using System.Net;
 using System.Text;
@@ -10,7 +10,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace OpenAvatarKid.Infrastructure.LLM
+namespace OpenAvatarKit.Infrastructure.LLM
 {
     /// <summary>
     /// 🔹 OpenAI Chat Completions API 呼び出しアダプタ

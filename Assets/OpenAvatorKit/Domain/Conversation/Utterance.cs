@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenAvatarKid.Domain.Conversation
+namespace OpenAvatarKit.Domain.Conversation
 {
     /// <summary>
     /// アバターの発話内容を表すクラス

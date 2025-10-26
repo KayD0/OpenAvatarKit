@@ -2,12 +2,12 @@ using Cysharp.Threading.Tasks;
 using OpenAvatarKit.Domain.Conversation;
 using System.Threading;
 
-namespace OpenAvatarKit.Infrastructure.Interface
+namespace OpenAvatarKit.UseCases.Ports
 {
-    public interface IChatClientAdapter
+    public interface IChatPort
     {
         /// <summary>
-        /// ���[�U���͂����Ƃ� LLM �����{ Script ���擾
+        /// ユーザ入力をもとに LLM から台本 Script を取得
         /// </summary>
         UniTask<ConversationScript> GetScriptAsync(string userText, Lang lang, CancellationToken ct);
     }
