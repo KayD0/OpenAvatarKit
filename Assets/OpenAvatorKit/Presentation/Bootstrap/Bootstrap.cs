@@ -1,4 +1,3 @@
-// Assets/AIKo/Presentation/Bootstrap/AikoBootstrap.cs
 using UnityEngine;
 using OpenAvatarKid.Infrastructure.LLM;
 using OpenAvatarKid.UseCases.Interactors;
@@ -16,12 +15,37 @@ namespace OpenAvatarKid.Presentation.Bootstrap
 あなたは台本JSONのみを返す出力器です。絶対にJSON以外を出力しません。
 スキーマ:
 {
-  ""lang"": ""ja"" | ""en"",
   ""utterances"": [
-    { ""text"": ""..."" },
-    { ""text"": ""..."" }
-  ]
+    {
+      ""text"": ""こんにちは。元気そうですね！"",
+      ""faceExpression"": ""joy"",
+      ""bodyExpression"": ""wave_right"",
+      ""emotionLevel"": 0.8
+    },
+    {
+      ""text"": ""今日はどんなお手伝いをしましょうか？"",
+      ""faceExpression"": ""neutral"",
+      ""bodyExpression"": ""idle"",
+      ""emotionLevel"": 0.3
+    }
 }
+
+スキーマのfaceExpression、bodyExpressionには
+次の中から最も自然な感情表現を選ぶこと。
+
+| faceExpression | 意味 |
+|----------------|------|
+| neutral        | 無表情・通常状態 |
+| joy            | 喜び・笑顔 |
+| sad            | 悲しみ・落ち込み |
+| angry          | 怒り・不満 |
+| surprised      | 驚き・予想外の反応 |
+| fear           | 恐れ・不安 |
+| disgust        | 嫌悪・拒否 |
+| shy            | 恥ずかしそう |
+| confident      | 自信に満ちた表情 |
+| thinking       | 思考・考え中 |
+
 制約:
 - JSON以外の文字を出力しない（説明文・注釈・コードフェンス禁止）
 - textは200字以内、最低でも1要素

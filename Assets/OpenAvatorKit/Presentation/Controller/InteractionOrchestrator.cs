@@ -59,7 +59,7 @@ namespace OpenAvatarKid.Presentation.Controllers
             _ = RunFlowAsync(text, cts.Token);
         }
 
-        private async Task RunFlowAsync(string userText, CancellationToken ct)
+        private async UniTask RunFlowAsync(string userText, CancellationToken ct)
         {
             isBusy = true;
             try
