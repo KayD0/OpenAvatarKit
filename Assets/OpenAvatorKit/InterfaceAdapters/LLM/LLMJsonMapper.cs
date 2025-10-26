@@ -1,6 +1,6 @@
+using OpenAvatarKid.Domain.Conversation;
 using System;
 using System.Collections.Generic;
-using OpenAvatarKid.Domain.Conversation;
 
 namespace OpenAvatarKid.InterfaceAdapters.LLM
 {

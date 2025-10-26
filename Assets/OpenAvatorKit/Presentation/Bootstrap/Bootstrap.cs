@@ -1,7 +1,7 @@
-using UnityEngine;
 using OpenAvatarKid.Infrastructure.LLM;
-using OpenAvatarKid.UseCases.Interactors;
 using OpenAvatarKid.Presentation.Controllers;
+using OpenAvatarKid.UseCases.Interactors;
+using UnityEngine;
 
 namespace OpenAvatarKid.Presentation.Bootstrap
 {

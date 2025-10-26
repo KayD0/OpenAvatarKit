@@ -1,9 +1,8 @@
-using System.Threading;
-using System.Threading.Tasks;
-using UnityEngine;
+using Cysharp.Threading.Tasks;
 using OpenAvatarKid.Domain.Conversation;
 using OpenAvatarKid.UseCases.Interactors;
-using Cysharp.Threading.Tasks;
+using System.Threading;
+using UnityEngine;
 
 namespace OpenAvatarKid.Presentation.Controllers
 {

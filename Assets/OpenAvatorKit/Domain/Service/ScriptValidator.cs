@@ -1,8 +1,7 @@
-﻿using System;
+﻿using OpenAvatarKid.Domain.Conversation;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
-using OpenAvatarKid.Domain.Conversation;
 
 namespace OpenAvatarKid.Domain.Services
 {

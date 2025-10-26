@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
+using OpenAvatarKid.Domain.Conversation;
+using OpenAvatarKid.Infrastructure.Interface;
+using OpenAvatarKid.InterfaceAdapters.LLM;
+using System;
+using System.Net;
 using System.Text;
 using System.Threading;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
-using OpenAvatarKid.Domain.Conversation;
-using OpenAvatarKid.UseCases.Ports;
-using OpenAvatarKid.InterfaceAdapters.LLM;
-using Cysharp.Threading.Tasks;
-using System.Net;
 
 namespace OpenAvatarKid.Infrastructure.LLM
 {
@@ -18,7 +18,7 @@ namespace OpenAvatarKid.Infrastructure.LLM
     /// - SSL再利用バグ対策 / リトライ / タイムアウト付き
     /// - 応答は LlmScriptParser → LlmJsonMapper を経て ConversationScript に変換
     /// </summary>
-    public sealed class OpenAIChatClientAdapter : IChatPort
+    public sealed class OpenAIChatClientAdapter : IChatClientAdapter
     {
         // ==== 基本設定 ====
         private readonly string apiKey;

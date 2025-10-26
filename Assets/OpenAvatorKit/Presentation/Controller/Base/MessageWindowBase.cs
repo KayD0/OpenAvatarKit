@@ -1,8 +1,7 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.UI;
-using Cysharp.Threading.Tasks;
 
 namespace OpenAvatarKid.Presentation.Controllers.Base
 {
@@ -20,22 +19,22 @@ namespace OpenAvatarKid.Presentation.Controllers.Base
 
         public virtual void Show(string prompt = null)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public virtual void Hide()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public virtual UniTask ShowMessageAsync(string message, CancellationToken token)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public virtual UniTask SetMessageAsync(string message, CancellationToken token)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

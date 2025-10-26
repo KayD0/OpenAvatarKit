@@ -2,15 +2,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using OpenAvatarKid.Domain.Conversation;
 using OpenAvatarKid.Domain.Services;
-using OpenAvatarKid.UseCases.Ports;
+using OpenAvatarKid.Infrastructure.Interface;
 
 namespace OpenAvatarKid.UseCases.Interactors
 {
     public sealed class RunInteractionUseCase
     {
-        private readonly IChatPort chat;
+        private readonly IChatClientAdapter chat;
 
-        public RunInteractionUseCase(IChatPort chat)
+        public RunInteractionUseCase(IChatClientAdapter chat)
         {
             this.chat = chat;
         }
