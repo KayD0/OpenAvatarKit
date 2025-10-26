@@ -1,171 +1,222 @@
 ## フォルダ構成
 ```
 Assets/
-├─ ThirdParty/                              # 外部（UniVRM/ChatdollKit/SDK類）
+├─ ThirdParty/                              # 外部SDK・パッケージ類
 │  ├─ UniVRM/
-│  └─ (OpenAI SDK など)
+│  ├─ ChatdollKit/
+│  ├─ OpenAI/
+│  └─ (VOICEVOX / Azure / Whisper / etc.)
 │
-└─ AIKo/                                    # 自前コード
-   ├─ Domain/                               # Unity非依存の純粋モデル・規則
+└─ AvatarChat/
+   ├─ Domain/                               # Unity非依存モデル・ルール
    │  ├─ Conversation/
-   │  │  ├─ Script.cs                      # LLM台本のドメインモデル（Lang, Utterance…）
-   │  │  ├─ Utterance.cs                   # text, VoiceSpec, Emotion, AnimCues
-   │  │  ├─ VoiceSpec.cs / EmotionTag.cs / AnimCue.cs
-   │  │  └─ Constraints.cs                 # 文字数/範囲などの規約値
+   │  │  ├─ ConversationScript.cs           # 台本モデル（Utterance配列）
+   │  │  ├─ Utterance.cs                    # Text / Emotion / Animation
+   │  │  ├─ EmotionTag.cs / VoiceSpec.cs
+   │  │  └─ Constraints.cs
    │  ├─ LipSync/
-   │  │  ├─ Viseme.cs / Phoneme.cs         # 口形状と音素モデル
+   │  │  ├─ Phoneme.cs / Viseme.cs
    │  │  └─ LipSyncRule.cs
-   │  └─ Services/
-   │     └─ ScriptValidator.cs             # スキーマ検証の純粋ロジック
+   │  └─ Shared/
+   │     └─ ResultCode.cs / AppConstants.cs
    │
-   ├─ UseCases/                             # アプリケーション（台本実行/口パク）
+   ├─ UseCases/                             # アプリケーションロジック層
    │  ├─ Interactors/
-   │  │  ├─ RunInteractionUseCase.cs       # 台本→TTS/Emotion/Animの順次実行
-   │  │  ├─ DriveLipSyncByAudioUseCase.cs  # 音量駆動リップシンク
-   │  │  └─ DriveLipSyncByPhonemeUseCase.cs# 音素駆動（対応TTS用）
-   │  ├─ Plan/
-   │  │  ├─ ExecutionPlan.cs               # UtterancePlan/全体Plan
-   │  │  └─ PlanFactory.cs                 # LLM正規化結果→Plan生成
-   │  └─ Ports/                            # 抽象インターフェース（外部非依存）
-   │     ├─ IChatPort.cs                   # userText→LLM JSON
-   │     ├─ ITtsPort.cs                    # text→wav / 再生
-   │     ├─ IEmotionPort.cs                # 表情適用
-   │     ├─ IAnimationPort.cs              # Animator制御
-   │     ├─ IAudioLevelPort.cs             # RMS取得
-   │     └─ IVisemeApplyPort.cs            # 口形状適用
+   │  │  ├─ HandleUserInputUseCase.cs       # 入力→LLM呼び出し→Script化
+   │  │  ├─ GenerateResponseUseCase.cs
+   │  │  ├─ PlaySpeechUseCase.cs
+   │  │  └─ UpdateLipSyncUseCase.cs
+   │  ├─ Services/                          # ロジック補助
+   │  │  ├─ EmotionMapper.cs
+   │  │  ├─ LipSyncService.cs
+   │  │  └─ ValidationService.cs
+   │  └─ Extensions/                        # 内部共通拡張など
    │
-   ├─ InterfaceAdapters/                    # 翻訳層（DTO/Mapper/Presenter）
+   ├─ InterfaceAdapters/                    # DTO変換・検証・Presenter
    │  ├─ LLM/
-   │  │  ├─ LLMContract.cs                 # LLMが返す“生”JSONのDTO
-   │  │  ├─ LLMScriptParser.cs             # 受信→検証→正規化（ゴミ除去/クランプ）
-   │  │  └─ LLMJsonMapper.cs               # 正規化DTO→Domain Script 変換
-   │  ├─ Presenters/
-   │  │  └─ InteractionPresenter.cs        # UseCase出力→ViewModel（任意）
-   │  └─ Telemetry/
-   │     └─ InteractionMetrics.cs          # 解析/失敗率/遅延記録（任意）
-   │
-   ├─ Infrastructure/                       # 具体実装（Unity/SDK/VRM）
-   │  ├─ LLM/
-   │  │  └─ OpenAIChatClientAdapter.cs     # IChatPort 実装（REST/SDK）
+   │  │  ├─ LlmContract.cs
+   │  │  ├─ LlmScriptParser.cs
+   │  │  └─ LlmJsonMapper.cs
    │  ├─ TTS/
-   │  │  ├─ VoiceVoxTtsAdapter.cs          # ITtsPort（合成＋再生）
-   │  │  └─ OpenAiTtsAdapter.cs
-   │  ├─ Avatar/                            # VRM接点（ここだけVRM APIに依存）
-   │  │  ├─ VrmEmotionAdapter.cs           # IEmotionPort（VRM0/1自動）
-   │  │  ├─ VrmVisemeAdapter.cs            # IVisemeApplyPort（A/I/U/E/O）
-   │  │  └─ AnimatorAnimationAdapter.cs    # IAnimationPort（Animator）
-   │  ├─ Audio/
-   │  │  └─ UnityAudioLevelAdapter.cs      # IAudioLevelPort（RMS）
-   │  └─ Loading/
-   │     └─ VrmRuntimeLoader.cs            # VRM0/1判別ロード
+   │  │  ├─ TtsContract.cs / TtsMapper.cs / TtsValidator.cs
+   │  ├─ STT/
+   │  │  ├─ SttContract.cs / SttMapper.cs / SttValidator.cs
+   │  ├─ Presenters/
+   │  │  ├─ ChatPresenter.cs
+   │  │  └─ AvatarPresenter.cs
+   │  └─ Telemetry/
+   │     └─ InteractionMetrics.cs
    │
-   ├─ Presentation/                         # Unityの入口（Mono/UI/配線）
-   │  ├─ Controllers/
-   │  │  ├─ InteractionOrchestrator.cs     # 監督：入力→UseCase起動/割込/LipSync Tick
-   │  │  ├─ SpeechToTextListener.cs        # 音声→文字イベント
-   │  │  └─ SimpleChatUI.cs                # 文字入力→Orchestrator
-   │  ├─ Bootstrap/
-   │  │  └─ AikoBootstrap.cs               # 依存組立（手動DI）
-   │  └─ UI/
-   │     ├─ LogPanel.cs / EmotionHUD.cs
-   │     └─ Prefabs/ (App.prefab, HUD.prefab)
+   ├─ Infrastructure/                       # 具体実装＋契約
+   │  ├─ Interface/                         # ← ここに全ての抽象I/Fを集約
+   │  │  ├─ IChatClientAdapter.cs           # LLM呼び出し契約
+   │  │  ├─ ITtsClientAdapter.cs            # 音声合成契約
+   │  │  ├─ ISttClientAdapter.cs            # 音声認識契約
+   │  │  ├─ IEmotionAdapter.cs              # VRM表情制御
+   │  │  ├─ IAnimationAdapter.cs            # アニメ制御
+   │  │  ├─ IAudioInputAdapter.cs           # 音声入力（RMS/音素）
+   │  │  └─ IMemoryRepository.cs            # 長期メモリ管理
+   │  │
+   │  ├─ LLM/
+   │  │  ├─ OpenAIChatClientAdapter.cs      # IChatClientAdapter実装
+   │  │  └─ ClaudeChatClientAdapter.cs
+   │  ├─ TTS/
+   │  │  ├─ VoiceVoxTtsClientAdapter.cs     # ITtsClientAdapter実装
+   │  │  └─ OpenAiTtsClientAdapter.cs
+   │  ├─ STT/
+   │  │  ├─ WhisperSttClientAdapter.cs      # ISttClientAdapter実装
+   │  │  └─ AzureSttClientAdapter.cs
+   │  ├─ Avatar/
+   │  │  ├─ VrmEmotionAdapter.cs  # IEmotionAdapter
+   │  │  ├─ AnimatorAdapter.cs    # IAnimationAdapter
+   │  │  └─ VrmLipSyncAdapter.cs  # IAudioInputAdapter
+   │  ├─ Memory/
+   │  │  └─ LocalMemoryRepository.cs
+   │  └─ Audio/
+   │     ├─ UnityAudioInputAdapter.cs
+   │     └─ UnityAudioPlaybackAdapter.cs
+   │
+   ├─ Presentation/                         # Unity側のMonoBehaviour/UI
+   │  ├─ Orchestration/                     # 全体指揮
+   │  │  ├─ DialogOrchestrator.cs
+   │  │  └─ InteractionStateMachine.cs
+   │  ├─ IO/                                # 入出力専用（片方向）
+   │  │  ├─ SpeechInputListener.cs
+   │  │  ├─ SpeechOutputDriver.cs
+   │  │  └─ WakeWordListener.cs
+   │  ├─ Synchronizers/                     # 双方向同期
+   │  │  ├─ LipSyncSynchronizer.cs
+   │  │  ├─ ExpressionSynchronizer.cs
+   │  │  └─ AvatarStateSynchronizer.cs
+   │  ├─ Bridges/                           # レイヤ間の橋渡し
+   │  │  ├─ ChatBridge.cs
+   │  │  ├─ ToolBridge.cs
+   │  │  └─ MemoryBridge.cs
+   │  ├─ UI/                                # Unity UI
+   │  │  ├─ ChatPanelUI.cs / LogPanel.cs / EmotionHUD.cs
+   │  │  └─ Prefabs/ (App.prefab, HUD.prefab)
+   │  └─ Bootstrap/
+   │     └─ AvatarChatBootstrap.cs
    │
    ├─ Resources/
    │  ├─ Prompts/
-   │  │  └─ SystemPrompt.txt               # JSON固定出力の指示文
+   │  │  └─ SystemPrompt.txt
    │  ├─ Profiles/
-   │  │  ├─ ExpressionProfile.asset        # 感情→表情マッピング
-   │  │  ├─ LipSyncProfile.asset           # Viseme重み/スムージング
-   │  │  └─ AnimationProfile.asset         # クリップ名/レイヤ整合
+   │  │  ├─ ExpressionProfile.asset
+   │  │  ├─ LipSyncProfile.asset
+   │  │  └─ AnimationProfile.asset
    │  └─ Config/
-   │     └─ InteractionConfig.asset        # 遅延/閾値/制限値
+   │     └─ InteractionConfig.asset
    │
    ├─ Addressables/
-   │  ├─ Animations/ (WaveRight.anim, Nod.anim...)
-   │  └─ Audio/PreGenerated/               # 定型TTSキャッシュ
+   │  ├─ Animations/ (WaveRight.anim, Nod.anim ...)
+   │  └─ Audio/PreGenerated/                # 定型TTSキャッシュ
    │
-   ├─ Scenes/ (Main.unity, Demo.unity)
-   └─ Editor/（検証ツール/バリデータなど）
-
-
-## 依存の方向性
-OpenAvatarKid.Domain            # 参照なし
-OpenAvatarKid.UseCases          # 参照: Domain
-OpenAvatarKid.InterfaceAdapters # 参照: UseCases, Domain
-OpenAvatarKid.Infrastructure    # 参照: InterfaceAdapters, UseCases, Domain, UnityEngine, VRM
-OpenAvatarKid.Presentation      # 参照: InterfaceAdapters, UseCases, Domain, Unity UI
+   ├─ Scenes/
+   │  ├─ Main.unity
+   │  └─ Demo.unity
+   │
+   └─ Editor/
+      ├─ Validator.cs
+      └─ AutoBindTool.cs
 ```
 
-## データフロー
+## 概念的フロー
 ```
-[User]
-  ├─🎙 Mic ──> SpeechToTextListener ──┐
-  └─⌨️ UI.Input ─> SimpleChatUI ──────┘
-                                      ▼
-                            InteractionOrchestrator
-                                      │  （割込・状態管理）
-                                      ▼
-                           RunInteractionUseCase (アプリ中核)
-                                      │
-                                      ▼
-                           ┌──────── LLM 台本パイプライン ────────┐
-                           │                                      │
-                           │   (1) IChatPort.GetScriptJsonAsync() │  ← LLM呼び出し
-                           │          │                           │
-                           │          ▼                           │
-                           │   ┌─────────────────────────────┐    │
-                           │   │  LlmScriptParser            │    │
-                           │   │  受信JSONの検証/正規化        │    │
-                           │   │  ・JSON限定抽出              │    │
-                           │   │  ・型/範囲クランプ           │    │
-                           │   │  ・既定値補完                │    │
-                           │   └─────────────────────────────┘    │
-                           │          │ 正規化DTO                  │
-                           │          ▼                           │
-                           │   ┌─────────────────────────────┐    │
-                           │   │  LlmJsonMapper              │    │
-                           │   │  DTO → Domain Script に変換 │    │
-                           │   └─────────────────────────────┘    │
-                           │          │ Script                     │
-                           │          ▼                           │
-                           │   ┌─────────────────────────────┐    │
-                           │   │  PlanFactory                │    │
-                           │   │  Script → ExecutionPlan     │    │
-                           │   │  （UtterancePlan[] 作成）   │    │
-                           │   └─────────────────────────────┘    │
-                           │          │ Plan                      │
-                           └──────────▼───────────────────────────┘
-                                      │ （以降、Planを順次実行）
-         ┌───────────────┬───────────────┬───────────────┬───────────────┐
-         ▼               ▼               ▼               ▼
-     IChatPort        ITtsPort      IEmotionPort     IAnimationPort
-       (LLM)           (TTS)          (表情)            (体の動き)
-         │               │                │                 │
-         │               │                │                 │
-         │         AudioSource.Play        │                 │
-         │               │                │                 │
-         ▼               ▼                ▼                 ▼
- [OpenAI/Claude]   [VOICEVOX/AI TTS]  [VRM表情Adapter]   [AnimatorAdapter]
+[User Input]
+  ↓
+(ChatPanelUI / SpeechInputListener)
+  ↓
+ChatBridge → DialogOrchestrator
+  ↓
+HandleUserInputUseCase
+  ↓
+IChatClientAdapter（OpenAIChatClientAdapter）→ JSON → LlmParser → Script
+  ↓
+PlaySpeechUseCase
+  ↓
+ITtsClientAdapter（VoiceVox / OpenAI TTS）
+  ↓
+SpeechOutputDriver（再生 & OnRms発火）
+  ↓
+LipSyncSynchronizer（口パク） + ExpressionSynchronizer（感情表情）
+  ↓
+[Avatar 発話完了]
+```
 
- （並列：口パク）
- AudioSource → IAudioLevelPort → DriveLipSyncUseCase → IVisemeApplyPort → [VRM 口形状]
+## フロー日本語解説
+```
+───────────────────────────────────────────────
+① ユーザー入力（話す or 打ち込む）
+───────────────────────────────────────────────
+🎙 マイク入力
+　→ SpeechInputListener（音声入力監視）
+　　　└─ 音声を録音 → STTエンジンに送信
+　　　　　↓
+　　　　文字起こし結果（テキスト）
 
-## データフローmini
-OpenAIChatClientAdapter.cs
-  └─ (string json)
-      ▼
-LlmScriptParser.cs
-  └─ (Normalized DTO / fail→error)
-      ▼
-LlmJsonMapper.cs
-  └─ (Domain Script)
-      ▼
-PlanFactory.cs
-  └─ (ExecutionPlan: UtterancePlan[])
-      ▼
-RunInteractionUseCase.cs
-  ├─ ITtsPort (合成/再生)
-  ├─ IEmotionPort (表情)
-  ├─ IAnimationPort (体の動き)
-  └─ [並列] IAudioLevelPort→DriveLipSyncUseCase→IVisemeApplyPort（口形状）
+⌨️ テキスト入力
+　→ SimpleChatUI（チャット入力欄）
+　　　└─ 入力された文字列を送信
+　　　　　↓
+　　　　テキストを取得
+
+　　　※どちらの入力も最終的に同じ処理へ流れる
+───────────────────────────────────────────────
+② 対話の指揮・状態管理
+───────────────────────────────────────────────
+🧩 InteractionOrchestrator（会話の司令塔）
+　・「聞く→考える→話す」の流れを制御  
+　・話している途中で割込みがあれば中断処理  
+　・状態を管理（Idle / Thinking / Speaking）
+
+　↓
+　テキスト入力をもとに「AIへの質問」として処理開始
+───────────────────────────────────────────────
+③ AI応答生成（LLM呼び出し）
+───────────────────────────────────────────────
+🤖 HandleUserInputUseCase（AI応答を作る役割）
+　└─ OpenAIChatClientAdapter に問い合わせ
+　　　↓
+　　LLM（例: GPTやClaude）が返す応答JSONを取得
+
+🧾 LlmScriptParser（検証）
+　・不正なJSONを補正、必要な情報だけ抽出  
+　（発話文・感情・モーションなど）
+
+🧭 LlmJsonMapper（変換）
+　・DTO（外部データ）→ Script（内部形式）に変換  
+　　＝ AIの返答をアバターが理解できる形に整理
+
+🗂 PlanFactory（実行計画の作成）
+　・発話内容・感情・動作を並べた台本を生成  
+　　例）「こんにちは！（笑顔で手を振る）」
+───────────────────────────────────────────────
+④ 出力処理（話す・表情・口パク）
+───────────────────────────────────────────────
+💬 PlaySpeechUseCase（発話処理）
+　└─ OpenAiTtsClientAdapter / VoiceVoxTtsClientAdapter  
+　　　→ 文字列を音声データ（WAV/PCM）に変換  
+　　　→ SpeechOutputDriver が再生（AudioSource）
+
+🎧 SpeechOutputDriver（音声再生）
+　・再生中の音量（RMS）をリアルタイム取得  
+　・音の強弱に合わせて「口パクイベント」を発火
+
+😃 ExpressionSynchronizer（表情制御）
+　・感情タグ（joy, sad など）を VRM BlendShape に反映  
+　・笑う・怒るなどの表情を切り替え
+
+💋 LipSyncSynchronizer（口パク同期）
+　・SpeechOutputDriver から送られる音量/音素を受け取り  
+　・VRM の口形状（A/I/U/E/O）をリアルタイム更新
+───────────────────────────────────────────────
+⑤ アバター出力（見た目と音声）
+───────────────────────────────────────────────
+🗣 アバターが感情を込めて話す
+　＋口パク、表情、モーションが同時に再生
+
+💫 InteractionOrchestrator が再生完了を検知
+　→ 状態を Idle に戻し、次の入力を待機
+───────────────────────────────────────────────
 ```
